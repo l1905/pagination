@@ -108,7 +108,7 @@
                 case '1':
                     return $this->tplGithub();
                 default:
-                    # code...
+                    # TODO code...
                     break;
             }
         }
@@ -120,7 +120,6 @@
             $result .= '<li class="'.$previousDisabled.'"><a href="#">Previous</a></li>';
             $currentPage = $this->getCurrentPage();
             $pageNum = $this->getPageNum();
-            // $url = $this->urlParse();
 
             $offset = 2;
             $from = $currentPage - $offset;
@@ -143,12 +142,10 @@
                     $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
                     $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
                     $result .= '<li><span>…</span></li>';
-                    // echo "1,2...";
                 } else if($from == '4'){
                     $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
                     $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
                     $result .= '<li><a href="'.$this->urlReplace(3).'">3</a></li>';
-                    // echo "1,2,3,";
                 } else if($from == '3'){
                     $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
                     $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
