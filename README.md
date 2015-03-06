@@ -27,11 +27,14 @@ echo $paginationTpl;
  
  ![alt tag](https://github.com/l1905/pagination/blob/master/demo2.png)
 
+### 中文介绍
 
- ### 中文介绍
- 1.依赖bootsrap
- 2.目前完成github风格的分页,即与github分页翻页风格一致
- 3.后续会完成多种分页模板的渲染
- 4.暂时仅支持普通的路由规则
+1.依赖bootsrap
+
+2.目前完成github风格的分页,即与github分页翻页风格一致
+
+3.后续会完成多种分页模板的渲染
+
+4.暂时仅支持普通的路由规则
 
 
