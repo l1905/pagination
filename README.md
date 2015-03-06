@@ -19,5 +19,8 @@ require_once 'Pagination.class.php';
  $paginationTpl = $demo->render();
  echo $paginationTpl;
 ```
+ ![alt tag](https://github.com/l1905/pagination/blob/master/demo1.png)
  
+ 
+ ![alt tag](https://github.com/l1905/pagination/blob/master/demo2.png)
 
