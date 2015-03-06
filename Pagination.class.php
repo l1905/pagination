@@ -6,6 +6,7 @@
         private $_pageNum;
         private $_total;
         private $_mode;
+        private $findme = '{pgnmbr}';
         
         public function __construct($currentPage, $total, $limit, $mode) {
             $this->setLimit($limit);
@@ -79,16 +80,28 @@
 
         public function urlParse() {
             $uri = $_SERVER['REQUEST_URI'];
-            $pos = strstr($uri, '?');
+            $pos = strpos($uri, '?');
             if($pos === false) {
-                $result = $uri.'?page=pgnmbr';
+                $result = $uri.'?page='.$this->findme;
             } else {
-                $result = $uri.'&page=pgnmbr';
+                $querystring = substr(strstr($uri, '?'), 1);
+                parse_str($querystring, $pars);
+                $query_array = array();
+                foreach($pars as $k=>$v) {
+                    if($k != 'page') $query_array[$k] = $v;
+                }
+                $querystring = http_build_query($query_array);
+                $uri = substr($uri, 0, $pos).'?'.$querystring;
+
+                $result = $uri.'&page='.$this->findme;
             }
             
             return $result;
         }
 
+        public function urlReplace($page) {
+            return str_replace($this->findme, $page, $this->urlParse());
+        }
 
         public function render() {
             switch ($this->getMode()) {
@@ -127,27 +140,27 @@
             }
             if($from >1) {
                 if($from>4) {
-                    $result .= '<li><a href="#">1</a></li>';
-                    $result .= '<li><a href="#">2</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
                     $result .= '<li><span>…</span></li>';
                     // echo "1,2...";
                 } else if($from == '4'){
-                    $result .= '<li><a href="#">1</a></li>';
-                    $result .= '<li><a href="#">2</a></li>';
-                    $result .= '<li><a href="#">3</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(3).'">3</a></li>';
                     // echo "1,2,3,";
                 } else if($from == '3'){
-                    $result .= '<li><a href="#">1</a></li>';
-                    $result .= '<li><a href="#">2</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(2).'">2</a></li>';
                 } else {
-                    $result .= '<li><a href="#">1</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace(1).'">1</a></li>';
                 }
             }
             for($i=$from; $i<=$to; $i++) {
                 if($i == $currentPage) {
                     $result .= '<li class="active"><span>'.$i.'</span></li>'; 
                 } else {
-                    $result .= '<li><a href="">'.$i.'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($i).'">'.$i.'</a></li>';
                 }
             }
 
@@ -156,17 +169,17 @@
             if($diff>0) {
                 if($diff>=4) {
                     $result .= '<li><span>…</span></li>';
-                    $result .= '<li><a href="">'.($pageNum-1).'</a></li>';
-                    $result .= '<li><a href="">'.($pageNum).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum-1).'">'.($pageNum-1).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum).'">'.($pageNum).'</a></li>';
                 } else if($diff == 3){
-                    $result .= '<li><a href="">'.($pageNum-2).'</a></li>';
-                    $result .= '<li><a href="">'.($pageNum-1).'</a></li>';
-                    $result .= '<li><a href="">'.($pageNum).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum-2).'">'.($pageNum-2).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum-1).'">'.($pageNum-1).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum).'">'.($pageNum).'</a></li>';
                 } else if($diff == 2){
-                    $result .= '<li><a href="">'.($pageNum-1).'</a></li>';
-                    $result .= '<li><a href="">'.($pageNum).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum-1).'">'.($pageNum-1).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum).'">'.($pageNum).'</a></li>';
                 } else if($diff ==1) {
-                    $result .= '<li><a href="">'.($pageNum).'</a></li>';
+                    $result .= '<li><a href="'.$this->urlReplace($pageNum).'">'.($pageNum).'</a></li>';
                 }
             }
             $lastDisabled = $this->isLastPage()?'disabled':'';
