@@ -9,6 +9,7 @@ It provides this feature:
 ### demo
 
 ```
+require_once 'Pagination.class.php';
  if(isset($_GET['page'])) {
     $page = max(intval($_GET['page']), 1);
  } else {
